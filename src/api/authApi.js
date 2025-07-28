@@ -1,6 +1,8 @@
 // Supabase-based authentication API wrappers (no integration, just API functions)
 import { supabase } from './supabaseClient';
 
+const SITE_URL = import.meta.env.VITE_SITE_URL;
+console.log('SITE_URL:', SITE_URL);
 // Login with email and password
 export async function login({ email, password }) {
   // Check provider
@@ -48,7 +50,7 @@ export async function signup({ email, password, name }) {
     email,
     password,
     options: {
-      emailRedirectTo: window.location.origin + '/Login',
+      emailRedirectTo: SITE_URL + '/Login',
       data: { name }, // Store name in user_metadata as well
     },
   });
@@ -94,7 +96,7 @@ export async function loginWithGoogle(email) {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin + '/google-callback',
+      redirectTo: SITE_URL + '/google-callback',
     },
   });
   if (error) throw error;
